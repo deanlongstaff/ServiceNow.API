@@ -160,7 +160,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### One PSCustomObject per request, with Id, StatusCode, Body, Headers and ExecutionTime.
+### One PSCustomObject per request, with Id, StatusCode, Body, Headers, ExecutionTime and a
+### Serviced boolean. Serviced is $true for requests the platform ran (StatusCode/Body/Headers
+### populated) and $false for requests it could not service; filter with
+### `Where-Object Serviced` / `Where-Object { -not $_.Serviced }`.
 ## NOTES
 
 ## RELATED LINKS

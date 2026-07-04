@@ -36,7 +36,10 @@ function Invoke-ServiceNowBatch {
         Run a read and a create together.
 
         .OUTPUTS
-        One PSCustomObject per request, with Id, StatusCode, Body, Headers and ExecutionTime.
+        One PSCustomObject per request, with Id, StatusCode, Body, Headers, ExecutionTime and a
+        Serviced boolean. Serviced is $true for requests the platform ran (StatusCode/Body/Headers
+        populated) and $false for requests it could not service; filter with
+        `Where-Object Serviced` / `Where-Object { -not $_.Serviced }`.
 
         .LINK
         https://github.com/deanlongstaff/ServiceNow.API
