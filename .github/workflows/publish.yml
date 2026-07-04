@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to PowerShell Gallery
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify module version matches the release tag
+        shell: pwsh
+        run: |
+          $manifest = Test-ModuleManifest -Path ./src/ServiceNow.API/ServiceNow.API.psd1
+          $tag = '${{ github.event.release.tag_name }}'.TrimStart('v')
+          if ($manifest.Version.ToString() -ne $tag) {
+            throw "Module version $($manifest.Version) does not match release tag $tag."
+          }
+          Write-Host "Module version $($manifest.Version) matches release tag."
+
+      - name: Publish module
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: ./build.ps1 -Task Publish -ApiKey $env:PSGALLERY_API_KEY

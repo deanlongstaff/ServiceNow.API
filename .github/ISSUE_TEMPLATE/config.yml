@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ServiceNow REST API documentation
+    url: https://www.servicenow.com/docs/
+    about: Reference documentation for the underlying ServiceNow REST API.
+  - name: Security vulnerability
+    url: https://github.com/deanlongstaff/ServiceNow.API/security/advisories/new
+    about: Please report security vulnerabilities privately, not as a public issue.

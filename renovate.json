@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "GitHub Actions used by the CI, release and publish workflows.",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "commitMessagePrefix": "ci:",
+      "addLabels": ["github-actions"]
+    },
+    {
+      "description": "PowerShell Gallery build tools pinned in build.ps1 (Pester, PSScriptAnalyzer, platyPS).",
+      "matchDatasources": ["nuget"],
+      "groupName": "powershell build tools",
+      "commitMessagePrefix": "build:",
+      "addLabels": ["powershell"]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update the PowerShell Gallery module minimum versions declared in build.ps1.",
+      "managerFilePatterns": ["/^build\\.ps1$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+\\$\\w+\\s*=\\s*\\[version\\]'(?<currentValue>[^']+)'"
+      ],
+      "registryUrlTemplate": "https://www.powershellgallery.com/api/v2/",
+      "versioningTemplate": "nuget"
+    }
+  ]
+}
