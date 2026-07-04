@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }} / PowerShell 7)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Analyze and test
+        shell: pwsh
+        run: ./build.ps1 -Task Test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: |
+            testResults.xml
+            coverage.xml
+          if-no-files-found: ignore
+
+  test-windows-powershell:
+    name: Test (windows-latest / Windows PowerShell 5.1)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Analyze and test
+        shell: powershell
+        run: ./build.ps1 -Task Test
+
+  docs:
+    name: Docs (markdown help in sync, external help compiles)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Regenerate markdown help
+        shell: pwsh
+        run: ./build.ps1 -Task Docs
+
+      - name: Fail if markdown help is out of date
+        shell: bash
+        run: |
+          if ! git diff --quiet -- docs/help; then
+            echo "::error::Markdown help is out of date. Run './build.ps1 -Task Docs' and commit the result."
+            git diff -- docs/help
+            exit 1
+          fi
+
+      - name: Verify external help compiles
+        shell: pwsh
+        run: ./build.ps1 -Task Build

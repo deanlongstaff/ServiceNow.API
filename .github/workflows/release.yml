@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Semantic version part to bump
+        type: choice
+        required: true
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Bump, test, publish and release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and changelog
+        id: bump
+        shell: pwsh
+        run: |
+          $type = (Get-Culture).TextInfo.ToTitleCase('${{ inputs.bump }}')
+          ./build.ps1 -Task Bump -BumpType $type
+          $version = (Test-ModuleManifest ./src/ServiceNow.API/ServiceNow.API.psd1).Version.ToString()
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Analyze and test
+        shell: pwsh
+        run: ./build.ps1 -Task Test
+
+      - name: Publish to PowerShell Gallery
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: ./build.ps1 -Task Publish -ApiKey $env:PSGALLERY_API_KEY
+
+      - name: Commit, tag and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "release: v${{ steps.bump.outputs.version }}"
+          git tag "v${{ steps.bump.outputs.version }}"
+          git push origin "HEAD:${{ github.ref_name }}"
+          git push origin "v${{ steps.bump.outputs.version }}"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create "v${{ steps.bump.outputs.version }}"
+          --title "v${{ steps.bump.outputs.version }}"
+          --notes "See [CHANGELOG.md](CHANGELOG.md) for details."

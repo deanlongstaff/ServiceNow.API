@@ -1,0 +1,25 @@
+# PowerShell / module build output
+output/
+*.nupkg
+testResults*.xml
+coverage*.xml
+*.coverage
+
+# Pester / analyzer artefacts
+.pester/
+PSScriptAnalyzerResults*.xml
+
+# Editor / OS
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.user
+.DS_Store
+Thumbs.db
+
+# Secrets / local config — never commit credentials or tokens
+*.local.ps1
+.env
+secrets.psd1

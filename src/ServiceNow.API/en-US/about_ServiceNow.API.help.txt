@@ -1,0 +1,69 @@
+TOPIC
+    about_ServiceNow.API
+
+SHORT DESCRIPTION
+    A community PowerShell client for the ServiceNow REST API.
+
+LONG DESCRIPTION
+    ServiceNow.API is a dependency-free PowerShell module for working with the
+    ServiceNow REST API. It provides record CRUD on any table, an easy-to-read
+    filter and query builder, attachments, batch requests, import sets,
+    aggregates, the Service Catalog and the Knowledge Base.
+
+    Every request goes through a single resilient core that handles Basic and
+    OAuth authentication (with automatic token refresh), waits and retries on
+    rate limiting (HTTP 429), and retries transient server errors (HTTP 502, 503
+    and 504) with exponential backoff.
+
+GETTING STARTED
+    Connect once for the session:
+
+        Connect-ServiceNow -Instance 'dev12345' -Credential (Get-Credential)
+
+    Then call any cmdlet:
+
+        Get-ServiceNowRecord -Table incident -Query 'active=true' -Limit 10
+
+    You can connect to more than one instance in the same session. The most
+    recently connected instance is the default; target any other per call with
+    -Instance <name>, or with an explicit -Connection object from
+    Connect-ServiceNow -PassThru.
+
+AUTHENTICATION
+    Three methods are supported:
+
+      - Basic: -Instance and -Credential.
+      - OAuth: -Instance, -Credential, -ClientId and -ClientSecret. An access
+        token is requested immediately and refreshed automatically.
+      - Token: -Instance and a pre-issued -AccessToken.
+
+    Credentials and tokens are held in memory only and are never written to disk.
+
+FILTERS AND QUERIES
+    Build encoded queries with New-ServiceNowQuery, or pass a -Filter to
+    Get-ServiceNowRecord and Get-ServiceNowAggregate. Operators mimic PowerShell
+    (-eq, -ne, -like, -gt, -between and so on) and conditions combine with 'and',
+    'or' and 'group'. You can also paste a raw encoded query from the ServiceNow
+    list view into -Query.
+
+CMDLETS
+    Connection : Connect-ServiceNow, Disconnect-ServiceNow, Get-ServiceNowConnection
+    Records    : Get-ServiceNowRecord, New-ServiceNowRecord, Set-ServiceNowRecord,
+                 Remove-ServiceNowRecord
+    Query      : New-ServiceNowQuery
+    Attachments: Get-ServiceNowAttachment, Add-ServiceNowAttachment,
+                 Save-ServiceNowAttachment, Remove-ServiceNowAttachment
+    Batch      : Invoke-ServiceNowBatch
+    Import     : Import-ServiceNowRecord
+    Aggregate  : Get-ServiceNowAggregate
+    Catalog    : Get-ServiceNowCatalogItem, Request-ServiceNowCatalogItem,
+                 Get-ServiceNowCatalogCart, Add-ServiceNowCatalogCartItem,
+                 Submit-ServiceNowCatalogCart
+    Knowledge  : Get-ServiceNowKnowledgeArticle
+    Discovery  : Get-ServiceNowTableSchema
+    Generic    : Invoke-ServiceNowRestMethod
+
+SEE ALSO
+    https://github.com/deanlongstaff/ServiceNow.API
+    Get-Help Connect-ServiceNow -Full
+    Get-Help Get-ServiceNowRecord -Full
