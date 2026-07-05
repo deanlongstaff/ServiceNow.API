@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-07-05
+
+### Fixed
+
+- Corrected malformed comment-based help for the `-Minimum` parameter of `Get-ServiceNowAggregate`,
+  whose description had been garbled with unrelated text and now correctly reads "Fields to take the
+  minimum of." Documentation only; no functional change.
+
 ## [1.0.0] - 2026-07-04
 
 ### Added
@@ -54,5 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pester test suite, PSScriptAnalyzer configuration, GitHub Actions CI/CD, an automated release
   workflow, and documentation.
 
-[Unreleased]: https://github.com/deanlongstaff/ServiceNow.API/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/deanlongstaff/ServiceNow.API/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/deanlongstaff/ServiceNow.API/releases/tag/v1.0.1
 [1.0.0]: https://github.com/deanlongstaff/ServiceNow.API/releases/tag/v1.0.0

@@ -181,7 +181,7 @@ Accept wildcard characters: False
 ```
 
 ### -Minimum
-{{ Fill Minimum Description }}
+Fields to take the minimum of.
 
 ```yaml
 Type: String[]

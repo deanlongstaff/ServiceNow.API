@@ -1,3 +1,13 @@
+## ServiceNow.API v1.0.1
+
+A documentation-only patch. Fixes malformed comment-based help for the `-Minimum` parameter of `Get-ServiceNowAggregate`, whose description had been garbled with unrelated text and now correctly reads "Fields to take the minimum of." No functional or behavioural changes.
+
+```powershell
+Update-Module -Name ServiceNow.API
+```
+
+---
+
 ## ServiceNow.API v1.0.0
 
 The first release of the most complete community PowerShell module for the ServiceNow REST API. Automate ServiceNow ITSM, ITOM and CMDB from PowerShell: query and manage records on any table, build readable filters, and work with attachments, batch requests, import sets, aggregates, GraphQL, the Service Catalog, the Knowledge Base and Change Management — with authentication, rate limiting and transient-error retries handled for you.

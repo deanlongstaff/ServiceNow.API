@@ -1,6 +1,6 @@
 @{
     RootModule           = 'ServiceNow.API.psm1'
-    ModuleVersion        = '1.0.0'
+    ModuleVersion        = '1.0.1'
     GUID                 = 'b8f4e2a1-6c3d-4f9a-9e57-2a1b8c4d5e6f'
     Author               = 'Dean Longstaff'
     CompanyName          = 'Dean Longstaff'

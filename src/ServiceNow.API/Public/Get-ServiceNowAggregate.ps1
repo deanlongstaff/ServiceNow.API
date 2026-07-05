@@ -30,9 +30,8 @@ function Get-ServiceNowAggregate {
         .PARAMETER Sum
         Fields to sum.
 
-        .PARAMETER Minimumto several instances at once, then target any of them
-  per call with `-Instance <name>` (or an explicit `-Connection` object). With neither, the most
-  recently connected instance is used
+        .PARAMETER Minimum
+        Fields to take the minimum of.
 
         .PARAMETER Maximum
         Fields to take the maximum of.
